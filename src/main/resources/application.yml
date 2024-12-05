@@ -1,0 +1,100 @@
+server:
+  port: 8992
+
+zoho:
+  api:
+    base:
+      url: https://www.zohoapis.com/crm/v2/Contacts
+    customer:
+      url: https://www.zohoapis.com/crm/v2/Customers
+    transactions:
+      url: https://www.zohoapis.com/crm/v2/Transactions
+    kyclimits:
+      url: https://www.zohoapis.com/crm/v2/KYCLimits
+  token:
+    url: https://accounts.zoho.com/oauth/v2/token
+  client:
+    id: 1000.NSINYJEG6SGO55I2GV96B1XIJVDAAM
+    secret: ef31c9f630f03d5a23ed423683d2343360b15957a3
+  redirect:
+    uri: http://localhost:8080/login/oauth2/code/zoho
+  crm:
+    scope: ZohoCRM.modules.ALL
+    soid: ZohoCRM.org842547782
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/swifta
+    username: root
+    password: cassillas1nengi
+  kafka:
+    bootstrap-servers: localhost:9092
+    groupId: xero-integration
+    consumer:
+      group-id: waya-zoho
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+    topics:
+      registration: process-registration
+      wallet-transaction: wallet-transaction
+      kyc-limit-setup: kyc-limit-setup
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          client:
+            RestTemplate: DEBUG
+  mvc:
+    throw-exception-if-no-handler-found: true
+  main:
+    allow-bean-definition-overriding: true
+
+xero:
+  upload:
+    journal: https://api.xero.com/api/xro/2.0/ManualJournals
+  fetch:
+    journal: https://api.xero.com/api/xro/2.0/ManualJournals
+  token-url: https://identity.xero.com/connect/token
+#  client-id: 3AD2E2D5F76440B1ABF15E228EFDE0A7
+  client-id: 3AA3588B944F4076B8F36758A79B7BFA
+#  client-secret: DecXR-EUUh3WNmCvn-7-2u0uY1rqAkgJHUJvC-j1wDMcOqt4
+  client-secret: 8AA7IYD1l-tBSjflv0riX2rRIYZHxAgjEjS4FpOmD_08tloj
+  grant-type: client_credentials
+  scope: accounting.transactions
+
+
+waya:
+  transaction: https://services.staging.wayabank.ng/temporal-service/api/v1/wallet/account/transactions/
+  token: serial eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbeyJjcmVhdGVkQXQiOiIwNy0xMS0yMDIyIDEwOjM4OjI3IiwidXBkYXRlZEF0IjoiMDctMTEtMjAyMiAxMDozODoyNyIsImNyZWF0ZWRCeSI6Ik1HUiIsIm1vZGlmaWVkQnkiOiJNR1IiLCJpZCI6MTAsIm5hbWUiOiJST0xFX1VTRVJfT1dORVIiLCJkZXNjcmlwdGlvbiI6IkNVU1RPTUVSIiwiZGVmYXVsdCI6dHJ1ZSwiYWRtaW5Sb2xlIjpmYWxzZX0seyJjcmVhdGVkQXQiOiIwNy0xMS0yMDIyIDEwOjM4OjI3IiwidXBkYXRlZEF0IjoiMDctMTEtMjAyMiAxMDozODoyNyIsImNyZWF0ZWRCeSI6Ik1HUiIsIm1vZGlmaWVkQnkiOiJNR1IiLCJpZCI6MjIsIm5hbWUiOiJST0xFX0FETUlOX0FQUCIsImRlc2NyaXB0aW9uIjoiU1lTVEVNIEFDQ09VTlQiLCJkZWZhdWx0IjpmYWxzZSwiYWRtaW5Sb2xlIjp0cnVlfV0sImlkIjoyMTUzLCJzdWIiOiJlZGNlZWJlZUBnbWFpbC5jb20iLCJpYXQiOjE2ODE0MTQwMjgsImV4cCI6MTcxMjk3MTYyOH0.jkJn_wCS9G5yDw2yOBkhC4ogW0kPkl2AyZ6CdYX8KOdiqRLRxkV-CBVqMkLXne2kZ9SmXVNke0h6RbbNdxklPQ
+
+  secure:
+    auth: AUTHENTICATION-SERVICE-API
+    authurl:  https://services.staging.wayabank.ng/auth-service/api/v1
+    log: LOGGING-SERVICE-API
+    logurl:  https://services.staging.wayabank.ng/logs-service/api/v1
+  authentication:
+    url: https://services.staging.wayabank.ng/auth-service/api/v1/auth/login
+    username: wayaadmin@wayapaychat.com
+    password: Test@#123
+
+  personalkyc:
+    url: https://services.staging.wayabank.ng/kyc-servicev2/api/v1/admin/kyc/requirementsData
+  businesskyc:
+    url: https://services.staging.wayabank.ng/kyc-servicev2/api/v1/admin/kyc/cac/fetchAllCacBusinessKycData
+  customers:
+      accounts: https://services.staging.wayabank.ng/temporal-service/api/v1/wallet/admin/user/accounts
